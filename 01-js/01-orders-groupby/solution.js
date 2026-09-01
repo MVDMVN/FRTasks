@@ -17,5 +17,79 @@
  * }>}
  */
 export function summarizeOrdersByCustomer(orders) {
-  // твой код
+  const paidOrders = orders.filter(order => order.status === 'paid')
+
+  const ordersWithTotal = paidOrders.map(order => ({
+    ...order,
+    summary: order.items.reduce((sum, item) => sum + item.price * item.qty, 0),
+  }))
+
+  const grouped = {}
+
+  for (const order of ordersWithTotal) {
+    if (!grouped[order.customerId]) {
+      grouped[order.customerId] = {
+        customerId: order.customerId,
+        customerName: order.customerName,
+        ordersCount: 0,
+        total: 0,
+      }
+    }
+
+    grouped[order.customerId].ordersCount += 1
+    grouped[order.customerId].total += order.summary
+  }
+
+  return Object.values(grouped).sort(
+    (left, right) =>
+      right.total - left.total ||
+      left.customerName.localeCompare(right.customerName),
+  )
 }
+
+console.log(
+  summarizeOrdersByCustomer([
+    {
+      id: 'o1',
+      customerId: 'c1',
+      customerName: 'Анна',
+      status: 'paid',
+      items: [
+        { title: 'Мышь', price: 1500, qty: 2 },
+        { title: 'Коврик', price: 500, qty: 1 },
+      ],
+    },
+
+    {
+      id: 'o2',
+      customerId: 'c1',
+      customerName: 'Анна',
+      status: 'paid',
+      items: [{ title: 'Клавиатура', price: 4000, qty: 1 }],
+    },
+
+    {
+      id: 'o3',
+      customerId: 'c2',
+      customerName: 'Борис',
+      status: 'paid',
+      items: [{ title: 'Монитор', price: 20000, qty: 1 }],
+    },
+
+    {
+      id: 'o4',
+      customerId: 'c2',
+      customerName: 'Борис',
+      status: 'cancelled',
+      items: [{ title: 'Ноутбук', price: 90000, qty: 1 }],
+    },
+
+    {
+      id: 'o5',
+      customerId: 'c3',
+      customerName: 'Виктор',
+      status: 'pending',
+      items: [{ title: 'Кресло', price: 50000, qty: 1 }],
+    },
+  ]),
+)
