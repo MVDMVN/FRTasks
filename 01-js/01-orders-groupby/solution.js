@@ -27,8 +27,8 @@ export function summarizeOrdersByCustomer(orders) {
   const grouped = {}
 
   ordersWithTotal.reduce((sum, item) => {
-    if (!grouped[item.customerId]) {
-      grouped[item.customerId] = {
+    if (!sum[item.customerId]) {
+      sum[item.customerId] = {
         customerId: item.customerId,
         customerName: item.customerName,
         ordersCount: 0,
@@ -36,9 +36,11 @@ export function summarizeOrdersByCustomer(orders) {
       }
     }
 
-    grouped[item.customerId].ordersCount += 1
-    grouped[item.customerId].total += item.summary
-  }, [])
+    sum[item.customerId].ordersCount += 1
+    sum[item.customerId].total += item.summary
+
+    return sum
+  }, grouped)
 
   return Object.values(grouped).sort(
     (left, right) =>
@@ -47,47 +49,49 @@ export function summarizeOrdersByCustomer(orders) {
   )
 }
 
-summarizeOrdersByCustomer([
-  {
-    id: 'o1',
-    customerId: 'c1',
-    customerName: 'Анна',
-    status: 'paid',
-    items: [
-      { title: 'Мышь', price: 1500, qty: 2 },
-      { title: 'Коврик', price: 500, qty: 1 },
-    ],
-  },
+console.log(
+  summarizeOrdersByCustomer([
+    {
+      id: 'o1',
+      customerId: 'c1',
+      customerName: 'Анна',
+      status: 'paid',
+      items: [
+        { title: 'Мышь', price: 1500, qty: 2 },
+        { title: 'Коврик', price: 500, qty: 1 },
+      ],
+    },
 
-  {
-    id: 'o2',
-    customerId: 'c1',
-    customerName: 'Анна',
-    status: 'paid',
-    items: [{ title: 'Клавиатура', price: 4000, qty: 1 }],
-  },
+    {
+      id: 'o2',
+      customerId: 'c1',
+      customerName: 'Анна',
+      status: 'paid',
+      items: [{ title: 'Клавиатура', price: 4000, qty: 1 }],
+    },
 
-  {
-    id: 'o3',
-    customerId: 'c2',
-    customerName: 'Борис',
-    status: 'paid',
-    items: [{ title: 'Монитор', price: 20000, qty: 1 }],
-  },
+    {
+      id: 'o3',
+      customerId: 'c2',
+      customerName: 'Борис',
+      status: 'paid',
+      items: [{ title: 'Монитор', price: 20000, qty: 1 }],
+    },
 
-  {
-    id: 'o4',
-    customerId: 'c2',
-    customerName: 'Борис',
-    status: 'cancelled',
-    items: [{ title: 'Ноутбук', price: 90000, qty: 1 }],
-  },
+    {
+      id: 'o4',
+      customerId: 'c2',
+      customerName: 'Борис',
+      status: 'cancelled',
+      items: [{ title: 'Ноутбук', price: 90000, qty: 1 }],
+    },
 
-  {
-    id: 'o5',
-    customerId: 'c3',
-    customerName: 'Виктор',
-    status: 'pending',
-    items: [{ title: 'Кресло', price: 50000, qty: 1 }],
-  },
-])
+    {
+      id: 'o5',
+      customerId: 'c3',
+      customerName: 'Виктор',
+      status: 'pending',
+      items: [{ title: 'Кресло', price: 50000, qty: 1 }],
+    },
+  ]),
+)
