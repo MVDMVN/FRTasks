@@ -24,6 +24,25 @@
 3. **TypeScript**: типизация пропсов, generics, utility types
 4. **React Native**: старт после того как 1-3 не вызывают затруднений — Expo, навигация, нативные модули, публикация в App Store, монетизация (StoreKit/RevenueCat, AdMob/AppLovin)
 
+# Как устроен проект
+
+Одна задача — одна папка внутри этапа:
+
+```
+01-js/01-orders-groupby/
+  task.txt           условие
+  solution.js        решаю я
+  solution.test.js   тесты — критерий «готово»
+```
+
+Этапы: `01-js` → `02-react` → `03-typescript` → `04-react-native`.
+
+Условия задач писать в `.txt` обычным текстом, без Markdown-разметки —
+я читаю их в VS Code как простой текст.
+
+Запуск: `npm test` (всё) или `node --test 01-js/01-orders-groupby/` (одна задача).
+Зависимостей нет, тест-раннер встроен в Node 22.
+
 # Текущий статус
 
 Этап 1 (JS refresher), задача 1 — `01-js/01-orders-groupby/` (сводка заказов по клиентам).

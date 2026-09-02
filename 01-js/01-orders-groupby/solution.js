@@ -26,19 +26,19 @@ export function summarizeOrdersByCustomer(orders) {
 
   const grouped = {}
 
-  for (const order of ordersWithTotal) {
-    if (!grouped[order.customerId]) {
-      grouped[order.customerId] = {
-        customerId: order.customerId,
-        customerName: order.customerName,
+  ordersWithTotal.reduce((sum, item) => {
+    if (!grouped[item.customerId]) {
+      grouped[item.customerId] = {
+        customerId: item.customerId,
+        customerName: item.customerName,
         ordersCount: 0,
         total: 0,
       }
     }
 
-    grouped[order.customerId].ordersCount += 1
-    grouped[order.customerId].total += order.summary
-  }
+    grouped[item.customerId].ordersCount += 1
+    grouped[item.customerId].total += item.summary
+  })
 
   return Object.values(grouped).sort(
     (left, right) =>
