@@ -1,0 +1,56 @@
+ЗАДАЧА 10 — QUERY STRING (Object.entries)
+
+
+О ЧЁМ ЗАДАЧА
+
+Есть объект с параметрами фильтра (то, что обычно летит в fetch как query
+параметры: ?category=shoes&page=2). Нужно собрать из объекта такую строку
+руками.
+
+
+ЧТО ИМЕННО ПИСАТЬ
+
+Файл solution.js:
+
+    export function toQueryString(params) { ... }
+
+params — объект вида { category: 'shoes', page: 2, inStock: true }.
+Значения могут быть undefined или null — такие поля надо пропускать
+(например "фильтр не выбран").
+
+Вернуть строку вида 'category=shoes&page=2&inStock=true' — БЕЗ ведущего
+знака ? (это не полный URL, просто query часть).
+
+Порядок полей в строке — тот же, что и порядок ключей в объекте.
+
+
+ПРИМЕР
+
+    toQueryString({ category: 'shoes', page: 2 })
+    // 'category=shoes&page=2'
+
+    toQueryString({ category: 'shoes', brand: undefined, page: 2 })
+    // 'category=shoes&page=2' — brand пропущен, потому что undefined
+
+    toQueryString({ category: undefined, brand: null })
+    // '' — все поля пустые, значит и строка пустая
+
+    toQueryString({})
+    // ''
+
+
+ПОДСКАЗКА ПО ИНСТРУМЕНТУ (не решение)
+
+Object.entries(obj) превращает объект в массив пар [ключ, значение]:
+
+    Object.entries({ a: 1, b: 2 })
+    // [['a', 1], ['b', 2]]
+
+Дальше это уже обычный массив — с ним можно filter/map/join, как раньше.
+
+
+ПРОВЕРКА
+
+    node --test 01-js/10-query-string/solution.test.js
+
+Зелёные тесты = задача сдана.
