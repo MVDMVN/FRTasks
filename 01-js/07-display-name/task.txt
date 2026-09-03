@@ -1,0 +1,61 @@
+ЗАДАЧА 7 — DISPLAY NAME (optional chaining + nullish coalescing)
+
+
+О ЧЁМ ЗАДАЧА
+
+Классика при работе с данными с бэкенда: юзер может быть null (не залогинен),
+у юзера может не быть profile, у profile может не быть name. Нужно достать
+имя для отображения, ничего не уронив ошибкой "Cannot read properties of
+undefined".
+
+
+ЧТО ИМЕННО ПИСАТЬ
+
+Файл solution.js:
+
+    export function getDisplayName(user) { ... }
+
+user может быть:
+  - null или undefined (гость, не залогинен)
+  - { profile: null }
+  - { profile: { name: null } } или { profile: { name: undefined } }
+  - { profile: { name: 'Аня' } }
+  - { profile: { name: '' } } — важный отдельный случай, смотри ниже
+
+Если имя реально есть (строка) — вернуть его.
+Если юзера/profile/name нет (null или undefined на любом уровне) —
+вернуть 'Гость'.
+
+
+ВАЖНЫЙ НЮАНС (в этом весь смысл задачи)
+
+{ profile: { name: '' } } — это НЕ "имени нет". Пустая строка — это валидное
+(хоть и странное) значение, которое реально пришло с сервера. Она не null и
+не undefined. В этом случае функция должна вернуть '' (пустую строку), а не
+'Гость'.
+
+То есть отличать "поля нет вообще" от "поле есть, но там falsy-значение
+вроде пустой строки" — это и есть разница между ?? и ||.
+
+
+ПРИМЕР
+
+    getDisplayName(null)                          // 'Гость'
+    getDisplayName({ profile: null })             // 'Гость'
+    getDisplayName({ profile: { name: null } })   // 'Гость'
+    getDisplayName({ profile: { name: 'Аня' } })  // 'Аня'
+    getDisplayName({ profile: { name: '' } })     // '' (пустая строка!)
+
+
+ОГРАНИЧЕНИЕ
+
+Использовать ?. и ??. Без ручных if-проверок на каждом уровне
+(user && user.profile && user.profile.name) — вот именно от этого длинного
+дерева проверок ?. и должен избавлять.
+
+
+ПРОВЕРКА
+
+    node --test 01-js/07-display-name/solution.test.js
+
+Зелёные тесты = задача сдана.
