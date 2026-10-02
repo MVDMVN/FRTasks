@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/*
+  Тёмная тема. Цвета заданы смысловыми именами, а не оттенками:
+  в разметке пишем bg-surface, а не bg-zinc-900. Если завтра решим
+  поменять палитру — правим только здесь, разметку не трогаем.
+
+  Значения взяты из палитры zinc + синий акцент.
+*/
+@theme {
+  /* фон страницы — самый тёмный слой */
+  --color-background: #09090b;
+
+  /* карточки, панели — на ступень светлее фона */
+  --color-surface: #18181b;
+
+  /* наведение на карточку/кнопку */
+  --color-surface-hover: #27272a;
+
+  /* границы и разделители */
+  --color-border: #27272a;
+
+  /* основной текст: не чисто белый, чтобы не резал глаза */
+  --color-foreground: #e4e4e7;
+
+  /* подписи, второстепенный текст */
+  --color-muted: #a1a1aa;
+
+  /* единственный акцент: ссылки, кнопки, активные состояния */
+  --color-accent: #3b82f6;
+  --color-accent-hover: #2563eb;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
